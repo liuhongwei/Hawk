@@ -112,16 +112,22 @@ namespace Hawk
 
             Closing += (s, e) =>
             {
-                if (MessageBox.Show(Core.Properties.Resources.Closing, Core.Properties.Resources.Tips, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-
+                //关闭时提示用户保存
+                MessageBoxResult mbr = MessageBox.Show(Core.Properties.Resources.Closing, Core.Properties.Resources.Tips, MessageBoxButton.YesNoCancel);
+                if (mbr == MessageBoxResult.OK)//执行保存
                 {
                     PluginManager.Close();
                     PluginManager.SaveConfigFile();
                     Process.GetCurrentProcess().Kill();
                 }
-                else
+                else if (mbr == MessageBoxResult.Cancel)
                 {
+                    //取消退出操作
                     e.Cancel = true;
+                }
+                else
+                {//结束进程
+                    Process.GetCurrentProcess().Kill();
                 }
             };
             //  TestCode();
