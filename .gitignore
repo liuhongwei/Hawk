@@ -5,3 +5,5 @@ obj/
 *.xml
 .suo
 .DS_Store
+/Hawk.Core/.vs/Hawk.Core/v15/Server/sqlite3
+/.vs
