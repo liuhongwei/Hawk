@@ -5,6 +5,7 @@ using System.Linq;
 using Hawk.Core.Utils;
 using Hawk.Core.Utils.MVVM;
 using Hawk.Core.Utils.Plugins;
+using System.IO;
 
 namespace Hawk.Core.Connectors
 {
@@ -57,7 +58,7 @@ namespace Hawk.Core.Connectors
             try
             {
                 instance = PluginProvider.GetObjectInstance<IConfigFile>(first.Name);
-
+                
                 instance.ReadConfig(instance.SavePath);
             }
             catch (Exception ex)
@@ -87,6 +88,12 @@ namespace Hawk.Core.Connectors
                        PluginProvider.GetObjectInstance(typeof (T)) as IConfigFile;
             try
             {
+                //判断是否存在配置文件
+                if (!File.Exists(instance.SavePath))
+                {
+                    instance.RebuildConfig();
+                    instance.SaveConfig();
+                }
                 instance.ReadConfig(instance.SavePath);
             }
             catch (Exception ex)
